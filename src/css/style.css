@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 375px;
+  margin: auto;
+
+  background-color: black;
+  color: azure;
+  font-family: "Roboto";
+}
+
+main {
+  margin-top: 36px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+}
+
+form {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+}
+input {
+  width: 250px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+button {
+  width: 120px;
+  height: 30px;
+  border-radius: 4px;
+  background: rgb(204, 0, 255);
+  color: white;
+}
+
+.list {
+  margin-top: 32px;
+}
