@@ -1,33 +1,12 @@
 const form = document.querySelector("#todo-form");
 const taskTitleInput = document.querySelector("#task-title");
-const taskButton = document.querySelector("#add-task-button");
+// const taskButton = document.querySelector("#add-task-button");
 const taskList = document.querySelector("#todo-list");
 
 let tasks = [];
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault(); //preventDefaut evita que a página seja recarregada ao submeter o formulário
-
-  const taskTitle = taskTitleInput.value;
-
-  console.log(taskTitle);
-
-  if (taskTitle.length < 3) {
-    alert("Seu título é muito curto. Informe um título maior.");
-
-    return; //return evita que o código continue a roda enquanto o titulo da tarefa não tiver mais do que tres caracteres
-  }
-
-  //adicionando a nova tarefa ao array de tasks
-  tasks.push({
-    title: taskTitle,
-    done: false,
-  });
-
-  //salvando adição de tarefas no localStorage
-  localStorage.setItem('tasks', JSON.stringify(tasks))
-
-  //adicionando a nova tarefa ao HTML
+ //criando uma função para adicionar novas tarefas ao html
+function renderTaskOnHTML (taskTitle, done = false) {
   const li = document.createElement("li");
 
   const input = document.createElement("input");
@@ -61,8 +40,13 @@ form.addEventListener("submit", (event) => {
   localStorage.setItem('tasks', JSON.stringify(tasks))
   })
 
+  input.checked = done
+
   const span = document.createElement('span');
   span.textContent = taskTitle;
+  if(done) {
+    span.style.textDecoration = 'line-through'
+  } 
 
   const button = document.createElement("button");
   button.textContent = "Remover";
@@ -85,6 +69,47 @@ form.addEventListener("submit", (event) => {
 
   //li.textContent = taskTitle; //Adiciona a próxima tarefa - o texto dentro da nova li recebe taskTitle
   taskList.appendChild(li);
+}
+
+window.onload = () => {
+  const tasksOnLocalStorage = localStorage.getItem('tasks')
+
+  if(!tasksOnLocalStorage) return
+
+  tasks = JSON.parse(tasksOnLocalStorage)
+
+  tasks.forEach(t => {
+    renderTaskOnHTML(t.title, t.done)
+  })
+}
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); //preventDefaut evita que a página seja recarregada ao submeter o formulário
+
+  const taskTitle = taskTitleInput.value;
+
+  console.log(taskTitle);
+
+  if (taskTitle.length < 3) {
+    alert("Seu título é muito curto. Informe um título maior.");
+
+    return; //return evita que o código continue a roda enquanto o titulo da tarefa não tiver mais do que tres caracteres
+  }
+
+  //adicionando a nova tarefa ao array de tasks
+  tasks.push({
+    title: taskTitle,
+    done: false,
+  });
+
+  //chamando função de adição de tarefas
+  renderTaskOnHTML(taskTitle)
+
+  //salvando adição de tarefas no localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+
+ 
+ 
 
   taskTitleInput.value = ""; //limpando o input a cada nova tarefa
 })
