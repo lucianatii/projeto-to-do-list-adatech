@@ -13,18 +13,61 @@ form.addEventListener("submit", (event) => {
   console.log(taskTitle);
 
   if (taskTitle.length < 3) {
-    alert("Informe um título maior");
+    alert("Seu título é muito curto. Informe um título maior.");
 
     return; //return evita que o código continue a roda enquanto o titulo da tarefa não tiver mais do que tres caracteres
   }
 
   //adicionando a nova tarefa ao array de tasks
-  tasks.push(taskTitle);
+  tasks.push({
+    title: taskTitle,
+    done: false,
+  });
   //adicionando a nova tarefa ao HTML
 
   const li = document.createElement("li");
 
-  li.textContent = taskTitle; //Adiciona a próxima tarefa - o texto dentro da nova li recebe taskTitle
+  const input = document.createElement("input");
+  input.setAttribute("type", "checkbox"); //definindo que meu input a ser criado é um  checkbox
+  input.addEventListener('change', (event) => {
+    const liToToggle = event.target.parentElement;
+
+    //conferindo se o input está marcado como checked
+    const done = event.target.checked
+
+    //pegando span a ser alterada ao concluir tarefa
+    const spanToToggle = liToToggle.querySelector('span')
+
+    if(done) {
+      spanToToggle.style.textDecoration = 'line-through'
+    } else {
+      spanToToggle.style.textDecoration = 'none'
+    }
+
+  })
+
+  const span = document.createElement('span');
+  span.textContent = taskTitle;
+
+  const button = document.createElement("button");
+  button.textContent = "Remover";
+  button.addEventListener("click", (event) => {
+    const liToRemove = event.target.parentElement;
+
+    const titleToRemove = liToRemove.querySelector('span').textContent;
+
+    tasks = tasks.filter(t => t.title !== titleToRemove);
+
+    taskList.removeChild(liToRemove);
+
+    console.log(tasks);
+  });
+
+  li.appendChild(input);
+  li.appendChild(span);
+  li.appendChild(button);
+
+  //li.textContent = taskTitle; //Adiciona a próxima tarefa - o texto dentro da nova li recebe taskTitle
   taskList.appendChild(li);
 
   taskTitleInput.value = ""; //limpando o input a cada nova tarefa
