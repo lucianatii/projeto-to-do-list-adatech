@@ -23,8 +23,11 @@ form.addEventListener("submit", (event) => {
     title: taskTitle,
     done: false,
   });
-  //adicionando a nova tarefa ao HTML
 
+  //salvando adição de tarefas no localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+
+  //adicionando a nova tarefa ao HTML
   const li = document.createElement("li");
 
   const input = document.createElement("input");
@@ -44,6 +47,18 @@ form.addEventListener("submit", (event) => {
       spanToToggle.style.textDecoration = 'none'
     }
 
+  tasks = tasks.map(t => {
+  if (t.title === spanToToggle.textContent) {
+      return {
+            title: t.title,
+            done: !t.done,
+          }
+        }
+      return t
+    })
+
+     //salvando alteração de tarefas no localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks))
   })
 
   const span = document.createElement('span');
@@ -60,7 +75,8 @@ form.addEventListener("submit", (event) => {
 
     taskList.removeChild(liToRemove);
 
-    console.log(tasks);
+    //salvando adição de tarefas no localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks))
   });
 
   li.appendChild(input);
@@ -71,4 +87,4 @@ form.addEventListener("submit", (event) => {
   taskList.appendChild(li);
 
   taskTitleInput.value = ""; //limpando o input a cada nova tarefa
-});
+})
